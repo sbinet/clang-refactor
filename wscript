@@ -28,6 +28,7 @@ def pkg_deps(ctx):
 def options(ctx):
     ctx.load('hwaf')
 
+    ctx.load('find_llvm')
     ctx.add_option(
         '--prefix',
         default=PREFIX,
@@ -39,42 +40,14 @@ def configure(ctx):
     ctx.load("hwaf-base")
     ctx.load('hwaf')
 
-    ctx.find_program("llvm-config", var='LLVM-CONFIG')
-    llvm_cfg = ctx.env['LLVM-CONFIG']
-    ctx.check_with(
-        ctx.check_cfg,
-        "llvm",
-        path=llvm_cfg,
-        package="",
-        uselib_store="llvm",
-        args="--cppflags --libs --ldflags",
-        )
-    ctx.env['STLIB_clang-static'] = [
-        "clang",
-        "clangARCMigrate",
-        "clangASTMatchers",
-        "clangRewriteFrontend",
-        "clangRewriteCore",
-        "clangStaticAnalyzerCheckers",
-        "clangStaticAnalyzerFrontend",
-        "clangStaticAnalyzerCore",
-        "clangTooling",
+    ctx.load('find_llvm')
+    ctx.find_llvm()
+    ctx.find_libclang()
 
-        "clangFrontendTool",
-        "clangFrontend",
-        "clangDriver",
-        "clangSerialization",
-        #"clangIndex",
-        "clangParse",
-        "clangSema",
-        "clangEdit",
-        "clangAnalysis",
-        "clangCodeGen",
-        "clangAST",
-        "clangLex",
-        "clangBasic",
-        ]
-    ctx.env['STLIBPATH_clang-static'] = ["/usr/lib/llvm"]
+    ctx.check(features='cxx cxxprogram', lib="dl",       uselib_store="dl")
+    ctx.check(features='cxx cxxprogram', lib='pcrecpp',  uselib_store='pcrecpp')
+    ctx.check(features='cxx cxxprogram', lib='yaml-cpp', uselib_store='yaml-cpp')
+    ctx.check(features='cxx cxxprogram', lib='pthread',  uselib_store='pthread')
     
     ctx.hwaf_configure()
     return
@@ -96,7 +69,6 @@ def build(ctx):
                 ],
         target="clang-refactorial",
         cxxflags = "-std=c++11",
-        linkflags = "-L/usr/lib/llvm -lpcrecpp -lyaml-cpp",
-        use="llvm clang-static pthread yaml-cpp pcrepp pthread",
+        use="LLVM-static clang-static yaml-cpp pcrecpp pthread",
         includes = ". Transforms",
         )
