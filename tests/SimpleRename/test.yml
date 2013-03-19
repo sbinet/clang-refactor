@@ -2,4 +2,4 @@
 Transforms:
   TypeRename:
     Types:
-      - class SampleNameSpace::Foo: Foobar
+      - class SampleNameSpace::Foo: Bar

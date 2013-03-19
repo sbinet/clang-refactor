@@ -1,15 +1,12 @@
 #!/bin/sh
-cp foo.orig.h foo.h
-cp foo.orig.cpp foo.cpp
+
+set -e
+
+/bin/cp foo.orig.h foo.h
+/bin/cp foo.orig.cpp foo.cpp
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS:STRING=ON .
-make
 
-mkdir -p ../../Build
-cd ../../Build/
-cmake ../
-make
-cd -
+clang-refactorial < test.yml
 
-../../Build/refactorial < test.yml
-touch foo.h foo.cpp
-make
+diff -urN foo.orig.h foo.h
+diff -urN foo.orig.cpp foo.cpp
