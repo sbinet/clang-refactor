@@ -4,20 +4,6 @@
 import os
 import os.path as osp
 
-# globals ---------------------------------------------------------------------
-top = '.'
-out = '__build__'
-PREFIX = 'install-area'
-VERSION = '0.0.1' # FIXME: should take it from somewhere else
-APPNAME = 'refactorial'
-
-# imports ---------------------------------------------------------------------
-
-# waf imports --
-import waflib.Logs
-import waflib.Utils
-import waflib.Options
-import waflib.Context
 import waflib.Logs as msg
 
 # functions -------------------------------------------------------------------
@@ -26,19 +12,10 @@ def pkg_deps(ctx):
     return
 
 def options(ctx):
-    ctx.load('hwaf')
-
     ctx.load('find_llvm')
-    ctx.add_option(
-        '--prefix',
-        default=PREFIX,
-        help="installation prefix [default: %r]"%PREFIX)
-
     return
 
 def configure(ctx):
-    ctx.load("hwaf-base")
-    ctx.load('hwaf')
 
     ctx.load('find_llvm')
     ctx.find_llvm()
@@ -48,8 +25,6 @@ def configure(ctx):
     ctx.check(features='cxx cxxprogram', lib='pcrecpp',  uselib_store='pcrecpp')
     ctx.check(features='cxx cxxprogram', lib='yaml-cpp', uselib_store='yaml-cpp')
     ctx.check(features='cxx cxxprogram', lib='pthread',  uselib_store='pthread')
-    
-    ctx.hwaf_configure()
     return
 
 def build(ctx):
@@ -72,3 +47,7 @@ def build(ctx):
         use="LLVM-static clang-static yaml-cpp pcrecpp pthread",
         includes = ". Transforms",
         )
+    return
+
+## EOF ##
+    
