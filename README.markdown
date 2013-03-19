@@ -28,6 +28,7 @@ You need the following dependencies:
 *   yaml-cpp
 *   Boost (needed by yaml-cpp)
 *   pcre
+*   hwaf
 
 For LLVM and Clang, you need to build them from the latest source. *Using the
 built-in one that comes with Xcode 4.2 won't work*.
@@ -50,37 +51,17 @@ option. Which can be a pain due to linkage issues.
 
 To build Refactorial, do this:
 
-    cmake .
-    make
+```sh
+# usual hwaf dance
+$ hwaf init some-dir
+$ cd some-dir
+$ hwaf setup .
 
-If you're on OS X, the default is to use the Clang installed in
-`/usr/local`. This assumes you have built your own Clang (which is what we
-do).
-
-
-### Building Refactorial and Its Dependencies with C++11 Enabled
-
-You can safely skip this section.
-
-If you really want to build Refactorial with C++11 enabled, you will also need
-to install libc++ (rev 157242; more recent versions won't work). Build all
-dependencies (all of them use CMake) with:
-
-    cmake -DCMAKE_BUILD_TYPE:STRING=Release \
-        -DCMAKE_CXX_FLAGS:STRING=-stdlib=libc++ \
-        -DCMAKE_SHARED_LINKER_FLAGS:STRING=-stdlib=libc++ \
-        .
-    make
-    sudo make install
-
-Then build Refactorial with:
-
-    cmake -DCMAKE_BUILD_TYPE:STRING=Release \
-        -DCMAKE_CXX_FLAGS:STRING="-stdlib=libc++ --std=c++0x" \
-        -DCMAKE_SHARED_LINKER_FLAGS:STRING=-stdlib=libc++ \
-        .
-    make
-
+# real work
+$ hwaf pkg co git://github.com/sbinet/refactorial
+$ hwaf configure
+$ hwaf
+```
 
 ## Using Refactorial
 
