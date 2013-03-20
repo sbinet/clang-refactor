@@ -20,3 +20,6 @@ diff -urN foo.orig.cpp foo.cpp
 set -e
 touch foo.h foo.cpp
 make
+
+echo ":: OK"
+## EOF ##
