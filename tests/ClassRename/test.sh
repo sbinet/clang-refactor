@@ -14,7 +14,7 @@ make clean
 
 #/bin/rm -rf compile_commands.json; touch compile_commands.json
 set +e
-clang-refactorial < test.yml
+clang-refactor < test.yml
 
 diff -urN foo.orig.h foo.h
 diff -urN foo.orig.cpp foo.cpp

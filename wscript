@@ -41,7 +41,7 @@ def configure(ctx):
 def build(ctx):
     ctx(
         features="cxx cxxprogram",
-        name="refactorial",
+        name="clang-refactor",
         source=["main.cpp",
                 "Refactoring.cpp",
                 "Transforms/AccessorsTransform.cpp",
@@ -53,7 +53,7 @@ def build(ctx):
                 "Transforms/Transforms.cpp",
                 "Transforms/TypeRenameTransform.cpp",
                 ],
-        target="clang-refactorial",
+        target="clang-refactor",
         cxxflags = "-std=c++11",
         use="LLVM-static clang-static yaml-cpp pcrecpp pthread boost",
         includes = ". Transforms",

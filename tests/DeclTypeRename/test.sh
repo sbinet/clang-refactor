@@ -11,7 +11,7 @@ make
 make rebuild_cache
 make clean
 
-clang-refactorial < test.yml
+clang-refactor < test.yml
 
 set +e
 diff -urN foo.orig.h foo.h
